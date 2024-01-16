@@ -1,2 +1,2 @@
-# tdm
-super minimalist login/display manager written in rust
+# tgetty
+getty/agetty replacement written in cpp
