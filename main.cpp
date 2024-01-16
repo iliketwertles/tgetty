@@ -84,7 +84,7 @@ int pam_authenticate(const std::string& username, const std::string& password, s
         sprintf(env[2]=envc[2],"HOME=%s",pw->pw_dir);
         sprintf(env[3]=envc[3],"SHELL=%s",pw->pw_shell);
         sprintf(env[4]=envc[4],"LOGNAME=%s",pw->pw_name);
-        std::cout << execve("/bin/bash", NULL, env);
+        std::cout << execve(start_cmd.c_str(), NULL, env);
     }
 
     // Clean up
@@ -93,10 +93,22 @@ int pam_authenticate(const std::string& username, const std::string& password, s
     return retval;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
     // w.ws_row && w.ws_col
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    std::string start_cmd;
+    switch (argc) {
+        case 1:
+            start_cmd = "/bin/bash";
+            break;
+        case 2:
+            start_cmd = argv[2];
+            break;
+        default:
+            start_cmd = argv[2];
+            break;
+    }
 
     // fancy terminal stuff
     std::string username = "";
@@ -105,7 +117,6 @@ int main() {
     std::cout << "\033[H\033[2J\033[3J";
     write_display(username, password, w, 1);
 
-    std::string start_cmd = "startplasma-wayland";
     int retval = pam_authenticate(username, password, start_cmd);
     return 0;
 }
