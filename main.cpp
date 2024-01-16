@@ -102,9 +102,6 @@ int main(int argc, char* argv[]) {
         case 1:
             start_cmd = "/bin/bash";
             break;
-        case 2:
-            start_cmd = argv[2];
-            break;
         default:
             start_cmd = argv[2];
             break;
